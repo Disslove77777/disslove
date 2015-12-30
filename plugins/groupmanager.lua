@@ -382,7 +382,7 @@ do
       user = {
         '!about : Read group description',
         '!rules : Read group rules',
-        '!link <get> : Print invite link'
+        'link <get> : Print invite link'
       },
     },
     patterns = {
@@ -393,7 +393,7 @@ do
       '^!(group) (lock) (.*)$',
       '^!(group) (settings)$',
       '^!(group) (unlock) (.*)$',
-      '^!(link) (.*)$',
+      '^(link) (.*)$',
       '^!(mkgroup) (.*)$',
       '%[(photo)%]',
       '^!(remgroup)$',
