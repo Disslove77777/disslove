@@ -441,10 +441,10 @@ do
       '^!(whitelist) (disable)$',
       '^!(whitelist) (enable)$',
       '^!(whitelist) (user) (%d+)$',
-      '^!(sik)$',
-      '^!(sik) (.*)$',
-      '^!(unsik)$',
-      '^!(unsik) (.*)$'
+      '^!(superban)$',
+      '^!(superban) (.*)$',
+      '^!(superunban)$',
+      '^!(superunban) (.*)$'
     },
     run = run,
     pre_process = pre_process
