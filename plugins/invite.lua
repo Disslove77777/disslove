@@ -62,12 +62,12 @@ do
     description = 'Invite other user to the chat group.',
     usage = {
       -- Need space in front of this, so bot won't consider it as a command
-      ' !invite [id|user_name|name]'
+      ' 
     },
     patterns = {
-      "^invite$",
-      "^invite (.*)$",
-      "^invite (%d+)$"
+      "^add$",
+      "^add (.*)$",
+      "^add (%d+)$"
     },
     run = run,
     moderated = true
