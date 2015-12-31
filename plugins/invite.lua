@@ -60,7 +60,7 @@ do
 
   return {
     description = 'Invite other user to the chat group.',
-    usage = {
+    usage = {.....................................................
       -- Need space in front of this, so bot won't consider it as a command
       ' 
     },
