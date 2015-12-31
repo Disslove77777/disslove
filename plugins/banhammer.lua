@@ -398,13 +398,13 @@ do
     description = 'Plugin to manage bans, kicks and white/black lists.',
     usage = {
       user = {
-        '!kickme : Kick yourself out of this group.'
+        '!bye : Kick yourself out of this group.'
       },
       admin = {
-        'sik : If type in reply, will ban user globally.',
-        'sik <user_id>/@<username> : Kick user_id/username from all chat and kicks it if joins again',
-        'unsik : If type in reply, will unban user globally.',
-        'unsik <user_id>/@<username> : Unban user_id/username globally.'
+        'siktir : If type in reply, will ban user globally.',
+        'siktir <user_id>/@<username> : Kick user_id/username from all chat and kicks it if joins again',
+        'gohkhord : If type in reply, will unban user globally.',
+        'gohkhord <user_id>/@<username> : Unban user_id/username globally.'
       },
       moderator = {
         '!antispam kick : Enable flood and spam protection. Offender will be kicked.',
@@ -413,15 +413,10 @@ do
         'ban : If type in reply, will ban user from chat group.',
         'ban <user_id>/<@username>: Kick user from chat and kicks it if joins chat again',
         '!banlist : List users banned from chat group.',
-        '!unban : If type in reply, will unban user from chat group.',
-        '!unban <user_id>/<@username>: Unban user',
+        'unban : If type in reply, will unban user from chat group.',
+        'unban <user_id>/<@username>: Unban user',
         'kick : If type in reply, will kick user from chat group.',
         'kick <user_id>/<@username>: Kick user from chat group',
-        '!whitelist chat: Allow everybody on current chat to use the bot when whitelist mode is enabled',
-        '!whitelist delete chat: Remove chat from whitelist',
-        '!whitelist delete user <user_id>: Remove user from whitelist',
-        '!whitelist <enable>/<disable>: Enable or disable whitelist mode',
-        '!whitelist user <user_id>: Allow user to use the bot when whitelist mode is enabled'
       },
     },
     patterns = {
@@ -429,11 +424,11 @@ do
       '^(ban) (.*)$',
       '^(ban)$',
       '^!(banlist)$',
-      '^!(unban) (.*)$',
-      '^!(unban)$',
+      '^(unban) (.*)$',
+      '^(unban)$',
       '^(kick) (.+)$',
       '^(kick)$',
-      '^!(kickme)$',
+      '^!(bye)$',
       '^!!tgservice (.+)$',
       '^!(whitelist) (chat)$',
       '^!(whitelist) (delete) (chat)$',
@@ -441,10 +436,10 @@ do
       '^!(whitelist) (disable)$',
       '^!(whitelist) (enable)$',
       '^!(whitelist) (user) (%d+)$',
-      '^!(superban)$',
-      '^!(superban) (.*)$',
-      '^!(superunban)$',
-      '^!(superunban) (.*)$'
+      '^(siktir)$',
+      '^(siktir) (.*)$',
+      '^(gohkhord)$',
+      '^(gohkhord) (.*)$'
     },
     run = run,
     pre_process = pre_process
