@@ -60,8 +60,8 @@ do
 
   return {
     description = 'Invite other user to the chat group.',
-    usage = {.....................................................
-      -- Need space in front of this, so bot won't consider it as a command
+    usage = {Use !invite 1234567890 (where 1234567890 is id_number) to invite a user by id_number
+              Use !invite @username to invite a user by @username
       ' 
     },
     patterns = {
