@@ -1,4 +1,5 @@
 do
+ 
 function run(msg, matches)
 
 local fuse = '#newfeedback \n\nid : ' .. msg.from.id .. '\n\nName : ' .. msg.from.print_name ..'\n\nLetters :\n\n\n' .. matches[1] 
@@ -32,7 +33,7 @@ return {
 
  usage = "!feedback message",
  patterns = {
- "^![Ff]eedback (.*)$"
+ "^!feedback (.*)$"
 
  },
  run = run
