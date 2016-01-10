@@ -13,8 +13,8 @@ local function tagall(cb_extra, success, result)
 end
 local function run(msg, matches)
     local receiver = get_receiver(msg)
-	if not is_owner(msg) then 
-		return "For owner only !"
+	if not is_mod(msg) then 
+		return "For mod only !"
 	end
 	if matches[1] then
 		chat_info(receiver, tagall, {receiver = receiver,msg_text = matches[1]})
@@ -26,7 +26,7 @@ end
 return {
   description = "Will tag all ppl with a msg.",
   usage = {
-    "/tagall [msg]."
+    "!tagall [msg]."
   },
   patterns = {
     "^[!/]tagall +(.+)$"
