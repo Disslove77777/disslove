@@ -12,13 +12,13 @@ do
             lock_name = 'yes',
             lock_photo = 'no',
             lock_member = 'no',
-            anti_flood = 'ban',
+            anti_spam = 'ban',
             welcome = 'group',
             sticker = 'ok',
             }
          }
         save_data(_config.moderation.data, data)
-        return send_large_msg(get_receiver(extra.msg), 'You have been promoted as moderator for this group.')
+        return send_large_msg(get_receiver(extra.msg), 'You have been pd as moderator for this group.')
       end
     end
   end
@@ -41,17 +41,17 @@ do
           lock_name = 'yes',
           lock_photo = 'no',
           lock_member = 'no',
-          anti_flood = 'ban',
+          anti_spam = 'ban',
           welcome = 'group',
           sticker = 'ok',
           }
         }
       save_data(_config.moderation.data, data)
-      return 'Group has been added, and @'..username..' has been promoted as moderator for this group.'
+      return 'Group has been added, and @'..username..' has been pd as moderator for this group.'
     end
   end
 
-  local function promote(receiver, member_username, member_id)
+  local function p(receiver, member_username, member_id)
     local data = load_data(_config.moderation.data)
     local group = string.gsub(receiver, 'chat#id', '')
     if not data[group] then
@@ -62,10 +62,10 @@ do
     end
     data[group]['moderators'][tostring(member_id)] = member_username
     save_data(_config.moderation.data, data)
-    return send_large_msg(receiver, member_username..' has been promoted as moderator for this group.')
+    return send_large_msg(receiver, member_username..' has been pd as moderator for this group.')
   end
 
-  local function demote(receiver, member_username, member_id)
+  local function d(receiver, member_username, member_id)
     local data = load_data(_config.moderation.data)
     local group = string.gsub(receiver, 'chat#id', '')
     if not data[group] then
@@ -76,10 +76,10 @@ do
     end
     data[group]['moderators'][tostring(member_id)] = nil
     save_data(_config.moderation.data, data)
-    return send_large_msg(receiver, member_username..' has been demoted from moderator of this group.')
+    return send_large_msg(receiver, member_username..' has been dd from moderator of this group.')
   end
 
-  local function admin_promote(receiver, member_username, member_id)
+  local function admin_p(receiver, member_username, member_id)
     local data = load_data(_config.moderation.data)
     if not data['admins'] then
       data['admins'] = {}
@@ -90,10 +90,10 @@ do
     end
     data['admins'][tostring(member_id)] = member_username
     save_data(_config.moderation.data, data)
-    return send_large_msg(receiver, member_username..' has been promoted as admin.')
+    return send_large_msg(receiver, member_username..' has been pd as admin.')
   end
 
-  local function admin_demote(receiver, member_username, member_id)
+  local function admin_d(receiver, member_username, member_id)
     local data = load_data(_config.moderation.data)
     if not data['admins'] then
       data['admins'] = {}
@@ -104,20 +104,20 @@ do
     end
     data['admins'][tostring(member_id)] = nil
     save_data(_config.moderation.data, data)
-    return send_large_msg(receiver, 'Admin '..member_username..' has been demoted.')
+    return send_large_msg(receiver, 'Admin '..member_username..' has been dd.')
   end
 
   local function username_id(extra, success, result)
     for k,v in pairs(result.members) do
       if v.username == extra.username then
-        if extra.mod_cmd == 'promote' then
-          return promote(extra.receiver, '@'..extra.username, v.id)
-        elseif extra.mod_cmd == 'demote' then
-          return demote(extra.receiver, '@'..extra.username, v.id)
-        elseif extra.mod_cmd == 'adminprom' then
-          return admin_promote(extra.receiver, '@'..extra.username, v.id)
-        elseif extra.mod_cmd == 'admindem' then
-          return admin_demote(extra.receiver, '@'..extra.username, v.id)
+        if extra.mod_cmd == 'p' then
+          return p(extra.receiver, '@'..extra.username, v.id)
+        elseif extra.mod_cmd == 'd' then
+          return d(extra.receiver, '@'..extra.username, v.id)
+        elseif extra.mod_cmd == 'add' then
+          return admin_p(extra.receiver, '@'..extra.username, v.id)
+        elseif extra.mod_cmd == 'rem' then
+          return admin_d(extra.receiver, '@'..extra.username, v.id)
         end
       end
     end
@@ -128,14 +128,14 @@ do
     if success == 1 then
       for k,v in pairs(result.members) do
         if extra.matches[2] == tostring(v.id) then
-          if extra.matches[1] == 'promote' then
-            return promote('chat#id'..result.id, 'user#id'..extra.matches[2], tostring(v.id))
-          elseif extra.matches[1] == 'demote' then
-            return demote('chat#id'..result.id, 'user#id'..extra.matches[2], tostring(v.id))
-          elseif extra.matches[1] == 'adminprom' then
-            return admin_promote('chat#id'..result.id, 'user#id'..extra.matches[2], tostring(v.id))
-          elseif extra.matches[1] == 'admindem' then
-            return admin_demote('chat#id'..result.id, 'user#id'..extra.matches[2], tostring(v.id))
+          if extra.matches[1] == 'p' then
+            return p('chat#id'..result.id, 'user#id'..extra.matches[2], tostring(v.id))
+          elseif extra.matches[1] == 'd' then
+            return d('chat#id'..result.id, 'user#id'..extra.matches[2], tostring(v.id))
+          elseif extra.matches[1] == 'add' then
+            return admin_p('chat#id'..result.id, 'user#id'..extra.matches[2], tostring(v.id))
+          elseif extra.matches[1] == 'rem' then
+            return admin_d('chat#id'..result.id, 'user#id'..extra.matches[2], tostring(v.id))
           end
         end
       end
@@ -153,14 +153,14 @@ do
     end
     local member_id = msg.from.id
     if msg.to.type == 'chat' and not is_sudo(msg) then
-      if extra.msg.text == '!promote' then
-        return promote(get_receiver(msg), member_username, member_id)
-      elseif extra.msg.text == '!demote' then
-        return demote(get_receiver(msg), member_username, member_id)
-      elseif extra.msg.text == '!adminprom' then
-        return admin_promote(get_receiver(msg), member_username, member_id)
-      elseif extra.msg.text == '!admindem' then
-        return admin_demote(get_receiver(msg), member_username, member_id)
+      if extra.msg.text == '!p' then
+        return p(get_receiver(msg), member_username, member_id)
+      elseif extra.msg.text == '!d' then
+        return d(get_receiver(msg), member_username, member_id)
+      elseif extra.msg.text == '!add' then
+        return admin_p(get_receiver(msg), member_username, member_id)
+      elseif extra.msg.text == '!rem' then
+        return admin_d(get_receiver(msg), member_username, member_id)
       end
     else
       return 'Use This in Your Groups.'
@@ -173,7 +173,7 @@ do
 
     if is_chat_msg(msg) then
       if is_mod(msg) then
-        if matches[1] == 'promote' then
+        if matches[1] == 'p' then
           if msg.reply_id then
             msgr = get_message(msg.reply_id, action_by_reply, {msg=msg})
           end
@@ -185,17 +185,17 @@ do
               chat_info(receiver, username_id, {mod_cmd=matches[1], receiver=receiver, username=username})
             end
           end
-        elseif matches[1] == 'demote' then
+        elseif matches[1] == 'd' then
           if msg.reply_id then
             msgr = get_message(msg.reply_id, action_by_reply, {msg=msg})
           end
           if matches[2] then
             if string.match(matches[2], '^%d+$') then
-              demote(receiver, 'user_'..matches[2], matches[2])
+              d(receiver, 'user_'..matches[2], matches[2])
             elseif string.match(matches[2], '^@.+$') then
               local username = string.gsub(matches[2], '@', '')
               if username == msg.from.username then
-                return 'You can\'t demote yourself.'
+                return 'You can\'t d yourself.'
               else
                 chat_info(receiver, username_id, {mod_cmd=matches[1], receiver=receiver, username=username})
               end
@@ -218,7 +218,7 @@ do
         end
       end
       if is_admin(msg) then
-        if matches[1] == 'adminprom' then
+        if matches[1] == 'add' then
           if msg.reply_id then
             msgr = get_message(msg.reply_id, action_by_reply, {msg=msg})
           end
@@ -230,13 +230,13 @@ do
               chat_info(receiver, username_id, {mod_cmd=matches[1], receiver=receiver, username=username})
             end
           end
-        elseif matches[1] == 'admindem' then
+        elseif matches[1] == 'rem' then
           if msg.reply_id then
             msgr = get_message(msg.reply_id, action_by_reply, {msg=msg})
           end
           if matches[2] then
             if string.match(matches[2], '^%d+$') then
-              admin_demote(receiver, 'user_'..matches[2], matches[2])
+              admin_d(receiver, 'user_'..matches[2], matches[2])
             elseif string.match(matches[2], '^@.+$') then
               local username = string.gsub(matches[2], '@', '')
               chat_info(receiver, username_id, {mod_cmd=matches[1], receiver=receiver, username=username})
@@ -272,37 +272,37 @@ do
     description = 'Moderation plugin',
     usage = {
       moderator = {
-        '!promote : If typed when replying, promote replied user as moderator',
-        '!promote <user_id> : Promote user_id as moderator',
-        '!promote @<username> : Promote username as moderator',
-        '!demote : If typed when replying, demote replied user from moderator',
-        '!demote <user_id> : Demote user_id from moderator',
-        '!demote @<username> : Demote username from moderator',
+        '!p : If typed when replying, p replied user as moderator',
+        '!p <user_id> : p user_id as moderator',
+        '!p @<username> : p username as moderator',
+        '!d : If typed when replying, d replied user from moderator',
+        '!d <user_id> : d user_id from moderator',
+        '!d @<username> : d username from moderator',
         '!modlist : List of moderators'
         },
       sudo = {
-        '!adminprom : If typed when replying, promote replied user as admin.',
-        '!adminprom <user_id> : Promote user_id as admin.',
-        '!adminprom @<username> : Promote username as admin.',
-        '!admindem : If typed when replying, demote replied user from admin.',
-        '!admindem <user_id> : Demote user_id from admin.',
-        '!admindem @<username> : Demote username from admin.'
+        '!add : If typed when replying, p replied user as admin.',
+        '!add <user_id> : p user_id as admin.',
+        '!add @<username> : p username as admin.',
+        '!rem : If typed when replying, d replied user from admin.',
+        '!rem <user_id> : d user_id from admin.',
+        '!rem @<username> : d username from admin.'
         },
       },
     patterns = {
-      '^!(admindem) (%d+)$',
-      '^!(admindem) (.*)$',
-      '^!(admindem)$',
+      '^!(rem) (%d+)$',
+      '^!(rem) (.*)$',
+      '^!(rem)$',
       '^!(adminlist)$',
-      '^!(adminprom) (%d+)$',
-      '^!(adminprom) (.*)$',
-      '^!(adminprom)$',
-      '^!(demote) (.*)$',
-      '^!(demote)$',
+      '^!(add) (%d+)$',
+      '^!(add) (.*)$',
+      '^!(add)$',
+      '^!(d) (.*)$',
+      '^!(d)$',
       '^!(modlist)$',
-      '^!(promote) (.*)$',
-      '^!(promote)$',
-      '^!(promote) (%d+)$',
+      '^!(p) (.*)$',
+      '^!(p)$',
+      '^!(p) (%d+)$',
       '^!!tgservice (chat_add_user)$',
       '^!!tgservice (chat_created)$'
     },
