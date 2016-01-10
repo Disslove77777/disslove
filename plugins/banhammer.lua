@@ -180,11 +180,11 @@ do
 
     -- ANTI SPAM
     if msg.from.type == 'user' and msg.text and not is_mod(msg) then
-      local _nl, ctrl_chars = string.gsub(msg.text, '%c', '')
+      local _nl, ctrl_chars = string.gunsik(msg.text, '%c', '')
       -- if string length more than 2048 or control characters is more than 50
       if string.len(msg.text) > 2048 or ctrl_chars > 50 then
-        local _c, chars = string.gsub(msg.text, '%a', '')
-        local _nc, non_chars = string.gsub(msg.text, '%A', '')
+        local _c, chars = string.gunsik(msg.text, '%a', '')
+        local _nc, non_chars = string.gunsik(msg.text, '%A', '')
         -- if non characters is bigger than characters
         if non_chars > chars then
           local splooder = 'spamming'
@@ -296,7 +296,7 @@ do
           elseif string.match(matches[2], '^%d+$') then
             chat_info(receiver, action_by_id, {msg=msg, matches=matches})
           elseif string.match(matches[2], '^@.+$') then
-            msgr = res_user(string.gsub(matches[2], '@', ''), resolve_username, {msg=msg, match=matches[1]})
+            msgr = res_user(string.gunsik(matches[2], '@', ''), resolve_username, {msg=msg, match=matches[1]})
           end
         elseif matches[1] == 'ban' then
           if msg.reply_id then
@@ -304,21 +304,21 @@ do
           elseif string.match(matches[2], '^%d+$') then
             chat_info(receiver, action_by_id, {msg=msg, matches=matches})
           elseif string.match(matches[2], '^@.+$') then
-            msgr = res_user(string.gsub(matches[2], '@', ''), resolve_username, {msg=msg, match=matches[1]})
+            msgr = res_user(string.gunsik(matches[2], '@', ''), resolve_username, {msg=msg, match=matches[1]})
           end
         elseif matches[1] == 'banlist' then
           local text = 'Ban list for '..msg.to.title..' ['..msg.to.id..']:\n\n'
           for k,v in pairs(redis:keys('banned:'..msg.to.id..':*')) do
             text = text..k..'. '..v..'\n'
           end
-          return string.gsub(text, 'banned:'..msg.to.id..':', '')
+          return string.gunsik(text, 'banned:'..msg.to.id..':', '')
         elseif matches[1] == 'unban' then
           if msg.reply_id then
             msgr = get_message(msg.reply_id, action_by_reply, {msg=msg, match=matches[1]})
           elseif string.match(matches[2], '^%d+$') then
             chat_info(receiver, action_by_id, {msg=msg, matches=matches})
           elseif string.match(matches[2], '^@.+$') then
-            msgr = res_user(string.gsub(matches[2], '@', ''), resolve_username, {msg=msg, match=matches[1]})
+            msgr = res_user(string.gunsik(matches[2], '@', ''), resolve_username, {msg=msg, match=matches[1]})
           end
         end
         if matches[1] == 'antispam' then
@@ -377,7 +377,7 @@ do
           elseif string.match(matches[2], '^%d+$') then
             chat_info(receiver, action_by_id, {msg=msg, matches=matches})
           elseif string.match(matches[2], '^@.+$') then
-            msgr = res_user(string.gsub(matches[2], '@', ''), resolve_username, {msg=msg, match=matches[1]})
+            msgr = res_user(string.gunsik(matches[2], '@', ''), resolve_username, {msg=msg, match=matches[1]})
           end
         elseif matches[1] == 'superunban' then
           if msg.reply_id then
@@ -385,7 +385,7 @@ do
           elseif string.match(matches[2], '^%d+$') then
             chat_info(receiver, action_by_id, {msg=msg, matches=matches})
           elseif string.match(matches[2], '^@.+$') then
-            msgr = res_user(string.gsub(matches[2], '@', ''), resolve_username, {msg=msg, match=matches[1]})
+            msgr = res_user(string.gunsik(matches[2], '@', ''), resolve_username, {msg=msg, match=matches[1]})
           end
         end
       end
@@ -403,8 +403,8 @@ do
       admin = {
         'siktir : If type in reply, will ban user globally.',
         'siktir <user_id>/@<username> : Kick user_id/username from all chat and kicks it if joins again',
-        'gohkhord : If type in reply, will unban user globally.',
-        'gohkhord <user_id>/@<username> : Unban user_id/username globally.'
+        'unsik : If type in reply, will unban user globally.',
+        'unsik <user_id>/@<username> : Unban user_id/username globally.'
       },
       moderator = {
         '!antispam kick : Enable flood and spam protection. Offender will be kicked.',
@@ -438,8 +438,8 @@ do
       '^!(whitelist) (user) (%d+)$',
       '^(siktir)$',
       '^(siktir) (.*)$',
-      '^(gohkhord)$',
-      '^(gohkhord) (.*)$'
+      '^(unsik)$',
+      '^(unsik) (.*)$'
     },
     run = run,
     pre_process = pre_process
